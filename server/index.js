@@ -4,6 +4,8 @@ const port = 3000
 const path = require('path');
 const morgan = require('morgan');
 
+const Group = require('../db/index')
+
 app.use(express.json());
 app.use(morgan('dev'));
 
