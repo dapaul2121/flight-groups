@@ -3,7 +3,10 @@ mongoose.connect('mongodb://localhost:27017/checkout', { useNewUrlParser: true, 
 
 let flightGroupSchema = mongoose.Schema({
     name: String,
-    members: [Object]
+    destinations: Object,
+    datesFree: Object,
+    members: [Object],
+    flights: [Object]
 });
 
 let Group = mongoose.model('group', flightGroupSchema);
