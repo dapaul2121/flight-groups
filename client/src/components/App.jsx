@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import axios from 'axios';
 import moment from 'moment';
@@ -10,14 +10,20 @@ import FlightList from './FlightList'
 import GroupForm from './GroupForm'
 import MemberForm from './MemberForm'
 
+// import AppWrapper from '../styles/AppWrapper' //
+
+import 'bootstrap/dist/css/bootstrap.css';//
+// import 'bootstrap/dist/css/bootstrap-theme.css'
+
 
 const mockState = require('../../../mockData/appState')
+const emptyState = require('../../../mockData/appStateEmpty')
 const skyscannerAPI = require('../../../skyscannerAPI')
 
 class App extends React.Component {
     constructor(props) {
         super(props)
-        this.state = mockState
+        this.state = emptyState
 
         this.getGroupNames = this.getGroupNames.bind(this)
         this.changeSelectedGroup = this.changeSelectedGroup.bind(this)
@@ -37,6 +43,27 @@ class App extends React.Component {
         this.formatFlights = this.formatFlights.bind(this)
     }
 
+    componentDidMount() {
+        axios.get('/group') 
+            .then((response) => {
+                if (response.data.length > 0) {
+                    this.setState((state, props) => {
+                        state.groups = response.data
+                        state.currentGroup = 0
+                        state.currentView = 'main'
+                        return state
+                    })
+                } else {
+                    this.setState((state, props) => {
+                        state = emptyState
+                        state.currentGroup = 0
+                        state.currentView = 'main'
+                        return state
+                    })
+                }
+            })
+    }
+
     getGroupNames() {
         return this.state.groups.map((group) => {
             return group.name
@@ -48,25 +75,57 @@ class App extends React.Component {
     }
 
     handleGroupSubmit(event, group) {
-        this.setState((state, props) => {
-            state.groups.push(group)
-            state.currentGroup = state.groups.length
-            state.currentView = 'main'
-            return state
-        })
+        axios.post('/group', group)
+            .then((response) => {
+                return axios.get('/group') 
+            })
+            .then((response) => {
+                this.setState((state, props) => {
+                    state.groups = response.data
+                    state.currentGroup = response.data.length
+                    state.currentView = 'main'
+                    return state
+                })
+            })
         event.preventDefault();
       }
     
     handleMemberSubmit(member) {
-        this.setState((state, props) => {
-            state.groups[state.selectedGroup].members.push(member)
-            state.currentView = 'main'
-            return state
-        }, () => {
-            // this.getGroupDestinations();
-            // this.getGroupDates()})
-            // this.getGroupFlightCombos();});
-            this.getFlightInfo();});
+        axios.patch(`/group/${this.state.groups[this.state.selectedGroup]._id}/member`, {
+            newMember: member,
+            group: this.state.groups[this.state.selectedGroup]
+        })
+        .then((response) => {
+            console.log(response)
+            return axios.get('/group')
+        }).then((response) => {
+            this.setState((state, props) => {
+                state.groups = response.data
+                state.currentView = 'main'
+                return state
+            }, () => {
+                axios.post('/flight', this.getGroupFlightCombos())
+                    .then((response) => {
+                        console.log(response)
+                        this.setState((state, props) => {
+                            state.groups[state.selectedGroup].flights = response.data
+                            return state
+        
+                        })
+                        
+                    })
+            })
+        })
+
+        // this.setState((state, props) => {
+        //     state.groups[state.selectedGroup].members.push(member)
+        //     state.currentView = 'main'
+        //     return state
+        // }, () => {
+        //     // this.getGroupDestinations();
+        //     // this.getGroupDates()})
+        //     // this.getGroupFlightCombos();});
+        //     this.getFlightInfo();});
         event.preventDefault();
 
     }
@@ -243,9 +302,9 @@ class App extends React.Component {
                 </div>
             )
         } else if (this.state.currentView === 'addGroup') {
-            return <GroupForm handleGroupSubmit = {this.handleGroupSubmit}/>
+            return <GroupForm style = {{width: '500px'}} handleGroupSubmit = {this.handleGroupSubmit}/>
         } else {
-            return <MemberForm handleMemberSubmit = {this.handleMemberSubmit} 
+            return <MemberForm style = {{width: '500px'}} handleMemberSubmit = {this.handleMemberSubmit} 
                     destinations = {this.state.groups[this.state.selectedGroup].destinations}
                     datesFree = {Object.assign(this.state.groups[this.state.selectedGroup].datesFree)}/>
         }
@@ -253,8 +312,8 @@ class App extends React.Component {
 
     render() {
         return (
-        <div>
-          <Header />
+        <div style = {{width: '500px', margin: '50px', textAlign: 'center', border: 'solid 3px gray'}}>
+          <Header view = {this.state.currentView}/>
           {this.setView()}
         </div>
         )

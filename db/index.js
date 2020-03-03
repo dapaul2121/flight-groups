@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/checkout', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/flightGroups', { useNewUrlParser: true, useUnifiedTopology: true });
 
 let flightGroupSchema = mongoose.Schema({
     name: String,

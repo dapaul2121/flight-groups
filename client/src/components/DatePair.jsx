@@ -31,9 +31,9 @@ class DatePair extends React.Component {
     render() {
       return (
           <div>
-            <label for="start">Start date:</label>
+            {/* <label for="start">Start date:</label> */}
             <input type="date" name = "startDate" max = {this.state.endDate} onChange = {this.handleChange}/>
-            <label for="start">End date:</label>
+            {/* <label for="start">End date:</label> */}
             <input type="date" name = "endDate"  min = {this.state.startDate} onChange = {this.handleChange}/>
           </div>
       );

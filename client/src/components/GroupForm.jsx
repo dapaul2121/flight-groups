@@ -2,16 +2,23 @@ import React from 'react'
 import CheckboxList from './CheckboxList'
 import DateList from './DateList'
 
+// import Form from 'react-bootstrap/Button'
+
+import {Form, Button} from 'react-bootstrap'
+
+
+console.log('Provider  ', Form.Label);
+
 class GroupForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        _id: null,
+        // _id: null,
         name: '',
         datesFree: {},
         destinations: {},
         members: [],
-        flights: []
+        flights: []//
     };
       this.handleChange = this.handleChange.bind(this);
       this.handleDestinationChange = this.handleDestinationChange.bind(this)
@@ -58,15 +65,15 @@ class GroupForm extends React.Component {
   
     render() {
       return (
-        <form onSubmit={() => {this.props.handleGroupSubmit(event, this.state)}}>
-          <label>
-            Name:
-            <input type="text" value={this.state.name} onChange={this.handleChange} />
-          </label>
+        <Form onSubmit={() => {this.props.handleGroupSubmit(event, this.state)}}>
+          <Form.Label> Name: </Form.Label>
+            <Form.Control type="text" value={this.state.name} onChange={this.handleChange} />
+          
           <CheckboxList allItems = {this.airports} handleCheckboxChange = {this.handleDestinationChange}/>
+          <div>Trip Start Date : Trip End Date</div>
           <DateList maxDates = {5} handleDateChange = {this.handleDateChange}/>
           <input type="submit" value="Submit" />
-        </form>
+        </Form>
       );
     }
   }
