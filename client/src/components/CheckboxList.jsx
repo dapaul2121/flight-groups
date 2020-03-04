@@ -1,18 +1,18 @@
 import React from 'react';
 
-import {Form} from 'react-bootstrap'
-// import MemberEntry from './MemberEntry'
+import ItemSelectWrapper from '../styles/ItemSelectWrapper'
 
 function CheckboxList(props) {
     const allItems = props.allItems
     const itemOptions = allItems.map((airport) => {
-            return (<div>
-                    <label>{airport}</label>
-                    <Form.Check type="checkbox" name={airport} onClick = {props.handleCheckboxChange}/>
-                    </div>)})
-    return (
-    <div>{itemOptions}</div>
-    )
+        return (
+        <ItemSelectWrapper>
+          <div>{airport}</div>
+          <input type="checkbox" name={airport} onClick = {props.handleCheckboxChange}/>
+        </ItemSelectWrapper>
+            )
+        })
+    return (<div>{itemOptions}</div>)
 }
 
 export default CheckboxList

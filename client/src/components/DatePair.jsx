@@ -1,5 +1,7 @@
 import React from 'react'
 
+import ItemSelectWrapper from '../styles/ItemSelectWrapper';
+
 class DatePair extends React.Component {
     constructor(props) {
       super(props);
@@ -13,7 +15,6 @@ class DatePair extends React.Component {
     }
   
     handleChange(event) {
-        console.log(event.target.value)
         const name = event.target.name
         const value = event.target.value
         this.setState((state, props) => {
@@ -31,10 +32,12 @@ class DatePair extends React.Component {
     render() {
       return (
           <div>
-            {/* <label for="start">Start date:</label> */}
-            <input type="date" name = "startDate" max = {this.state.endDate} onChange = {this.handleChange}/>
-            {/* <label for="start">End date:</label> */}
-            <input type="date" name = "endDate"  min = {this.state.startDate} onChange = {this.handleChange}/>
+            <ItemSelectWrapper>
+              <input type="date" name = "startDate" max = {this.state.endDate} onChange = {this.handleChange}/>
+            </ItemSelectWrapper>
+            <ItemSelectWrapper>
+              <input type="date" name = "endDate"  min = {this.state.startDate} onChange = {this.handleChange}/>
+            </ItemSelectWrapper>
           </div>
       );
     }

@@ -1,26 +1,31 @@
 const axios = require('axios')
 const skyscannerAPI = require('../../skyscannerAPI')
 const moment = require('moment')
+const Group = require('../../db/index')
+
+const createAxiosFlights = (flight) => {
+    const URL = `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/${flight.country}/${flight.currency}/${flight.locale}/${flight.originplace}/${flight.destinationplace}/${flight.outboundpartialdate}/${flight.inboundpartialdate}`
+    let axiosFlights = axios.create({
+        baseURL: URL,
+        headers: {
+            "x-rapidapi-host": "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
+            "x-rapidapi-key": skyscannerAPI
+            }
+        });
+    return axiosFlights
+}
 
 const createFlightPromises = (flightCombos) => {
     const flightPromises = []
     for (var i = 0; i < flightCombos.length; i++) {
     let flight = flightCombos[i]
     if (flight) {
-        let URL = `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/${flight.country}/${flight.currency}/${flight.locale}/${flight.originplace}/${flight.destinationplace}/${flight.outboundpartialdate}/${flight.inboundpartialdate}`
-        let axiosFlights = axios.create({
-            baseURL: URL,
-            headers: {
-                "x-rapidapi-host": "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-                "x-rapidapi-key": skyscannerAPI
-                }
-            });
+        axiosFlights = createAxiosFlights(flight)
         let newFlightPromise = new Promise((res, rej) => { 
             axiosFlights.get('/', {
                 inboundpartialdate: flight.inboundpartialdate
             })
                 .then((response) => {
-                    console.log(response)
                     res(response)
                 })
                 .catch((err) => {
@@ -31,7 +36,6 @@ const createFlightPromises = (flightCombos) => {
         flightPromises.push(newFlightPromise)
         }
     }
-console.log(flightPromises)
 return flightPromises
 }
 
@@ -50,20 +54,27 @@ const formatFlights = (flights) => {
             formattedFlightArr.push(formattedFlight)
         } 
     }
-    console.log(formattedFlightArr)
     return formattedFlightArr
 }
 
-const getFlights = (req, res) => {
-    console.log(req)
-    console.log('that was req.body')
+const postFlight = (sortedFormattedFlights, id) => {
+    Group.findByIdAndUpdate({_id: id}, { $set: {flights: sortedFormattedFlights}}, (err, data) => {
+        if (err) {
+            console.log(err) 
+        }
+    });
+}
+
+const getAndPostFlights = (req, res) => {
+    const id = req.params.id
     Promise.all(createFlightPromises(req.body))
         .then((response) =>{
             let flights = response.map((flight) => {return flight.data})
             const formattedFlights = formatFlights(flights)
-            console.log(flights)
+            formattedFlights.sort((a, b) => a.price - b.price)
+            postFlight(formattedFlights, id)
             res.send(formattedFlights)
         })
 }
 
-module.exports.getFlights = getFlights
+module.exports.getAndPostFlights = getAndPostFlights

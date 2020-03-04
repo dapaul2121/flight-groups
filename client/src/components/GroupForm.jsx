@@ -2,23 +2,15 @@ import React from 'react'
 import CheckboxList from './CheckboxList'
 import DateList from './DateList'
 
-// import Form from 'react-bootstrap/Button'
-
-import {Form, Button} from 'react-bootstrap'
-
-
-console.log('Provider  ', Form.Label);
-
 class GroupForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        // _id: null,
         name: '',
         datesFree: {},
         destinations: {},
         members: [],
-        flights: []//
+        flights: []
     };
       this.handleChange = this.handleChange.bind(this);
       this.handleDestinationChange = this.handleDestinationChange.bind(this)
@@ -51,29 +43,19 @@ class GroupForm extends React.Component {
                 state.datesFree[i] = dateObj
             }
             return state 
-            if (dateObj[Object.keys[0]] === null) {
-                delete state.datesFree[Object.keys[0]]
-                return state
-            } else {
-                return Object.assign(state.datesFree, dateObj)
-            }
         })
-    
     }
 
-
-  
     render() {
       return (
-        <Form onSubmit={() => {this.props.handleGroupSubmit(event, this.state)}}>
-          <Form.Label> Name: </Form.Label>
-            <Form.Control type="text" value={this.state.name} onChange={this.handleChange} />
-          
-          <CheckboxList allItems = {this.airports} handleCheckboxChange = {this.handleDestinationChange}/>
-          <div>Trip Start Date : Trip End Date</div>
+        <form onSubmit={() => {this.props.handleGroupSubmit(event, this.state)}}>
+          <div> Travel Group Name: </div>
+          <input type="text" value={this.state.name} onChange={this.handleChange} />
+          <CheckboxList allItems = {this.airports} handleCheckboxChange = {this.handleDestinationChange} style = {{float: 'left'}}/>
+          <div style = {{margin: '20px 0px'}}>Trip Start Date : Trip End Date</div>
           <DateList maxDates = {5} handleDateChange = {this.handleDateChange}/>
           <input type="submit" value="Submit" />
-        </Form>
+        </form>
       );
     }
   }

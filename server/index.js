@@ -18,6 +18,6 @@ app.get('/group', group.getAllGroups)
 app.patch('/group/:groupId/member', group.patchGroupMember)
 app.patch('/group/:groupId/flight', group.patchGroupMember)
 
-app.post('/flight', flight.getFlights)
+app.post('/flight/:id', flight.getAndPostFlights)
 
 app.listen(port, () => console.log(`listening on port ${port}!`));

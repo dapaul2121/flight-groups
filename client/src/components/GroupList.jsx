@@ -13,9 +13,7 @@ function GroupList(props) {
             return (<GroupEntry name = {name} i = {i} changeSelectedGroup = {changeSelectedGroup}/>)
         }
     });
-    return (
-        <div>{groupNames}</div>
-    )
+    return (<div>{groupNames}</div>)
 }
 
 export default GroupList

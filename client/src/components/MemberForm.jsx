@@ -1,9 +1,3 @@
-import 'react-dates/initialize';
-// import 'react-dates/lib/css/_datepicker.css';
-
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
-
-
 import React from 'react'
 import CheckboxList from './CheckboxList'
 import CheckboxDates from './CheckboxDates'
@@ -18,8 +12,6 @@ class MemberForm extends React.Component {
         destinations: {},
         datesFree: {}
     };
-
-    
     this.destinations = props.destinations
     this.datesFree = props.datesFree
     this.handleChange = this.handleChange.bind(this);
@@ -31,7 +23,6 @@ class MemberForm extends React.Component {
     handleChange(event) {
         const name = event.target.name 
         const value = event.target.value
-        console.log(value)
         this.setState((state, props) => {
             state[name] = value
             return state
@@ -62,45 +53,19 @@ class MemberForm extends React.Component {
             }
             return state
         });
-        // const name = event.target.name 
-        // const value = event.target.checked 
-        // console.log(value)
-        // this.setState((state, props) => {
-        //     debugger
-        //     let target = Object.assign(state.datesFree[name])
-        //     if (value === true) {
-        //         target.isFree = value
-        //     } else {
-        //         delete target.isFree
-        //     }
-        //     state.datesFree[name] = target
-        //     return state
-        // });
     }
-  
-    // handleSubmit(event) {
-    //   alert('A name was submitted: ' + this.state.firstName);
-    //   event.preventDefault();
-    // }
   
     render() {
       return (
         <form onSubmit={() => {this.handleMemberSubmit(this.state)}}>
-          <label>
-            First Name:
-            <input type="text" name = 'firstName' value={this.state.firstName} onChange={this.handleChange} />
-          </label>
-          <label>
-            Last Name:
-            <input type="text" name = 'lastName' value={this.state.lastName} onChange={this.handleChange} />
-          </label>
-          <label>
-            Email:
-            <input type="text" name = 'email' value={this.state.email} onChange={this.handleChange} />
-          </label>
+          <label> First Name: </label>
+          <input type="text" name = 'firstName' value={this.state.firstName} onChange={this.handleChange} />      
+          <label> Last Name: </label>
+          <input type="text" name = 'lastName' value={this.state.lastName} onChange={this.handleChange} />
+          <label> Email: </label>
+          <input type="text" name = 'email' value={this.state.email} onChange={this.handleChange} />
           <CheckboxList handleCheckboxChange = {this.handleDestinationChange} allItems = {Object.keys(this.destinations)}/>
           <CheckboxDates datesFree = {this.datesFree} handleDatesChange = {this.handleDatesChange}/>
-          
           <input type="submit" value="Submit" />
         </form>
       );

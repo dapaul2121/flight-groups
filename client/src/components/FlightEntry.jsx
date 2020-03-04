@@ -1,14 +1,12 @@
 import React from 'react';
 
 function MemberEntry(props) {
-    let flightInfoStr = ''
-    for (let key in props) {
-        if (key !== 'url') {
-            flightInfoStr += `${key}: ${props[key]}    `
-        }
-    }
     return (
-        <div onClick={()=> window.open(props.url, "_blank")}>{flightInfoStr}</div>
+        <div onClick={()=> window.open(props.url, "_blank")} style = {{border: 'solid 1px gray', width: '400px', margin: '0px 50px'}}>
+          <div>{`$${props.price}`}</div>
+          <div>{`${props.origin} to ${props.destination}`}</div>
+          <div>{`${props.startDate} to ${props.endDate}`}</div>
+        </div>
     )
 }
 
