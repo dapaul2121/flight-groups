@@ -4,6 +4,6 @@ package-lock.json
 bundle.js
 STYLE-GUIDE.md
 
-mockData
+mockData/appState.js
 
 skyscannerAPI.js
