@@ -1,1 +1,3 @@
 # flight-groups
+
+![](demo.gif)

@@ -1,5 +1,5 @@
 import React from 'react';
-
+console.log("helllksjdflkdsjlkfjds")
 import axios from 'axios';
 import moment from 'moment';
 
@@ -76,7 +76,7 @@ class App extends React.Component {
             .then((response) => {
                 this.setState((state, props) => {
                     state.groups = response.data
-                    state.currentGroup = response.data.length
+                    state.selectedGroup = response.data.length - 1
                     state.currentView = 'main'
                     return state
                 })

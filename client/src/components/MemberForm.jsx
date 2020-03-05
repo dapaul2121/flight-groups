@@ -58,12 +58,24 @@ class MemberForm extends React.Component {
     render() {
       return (
         <form onSubmit={() => {this.handleMemberSubmit(this.state)}}>
-          <label> First Name: </label>
-          <input type="text" name = 'firstName' value={this.state.firstName} onChange={this.handleChange} />      
-          <label> Last Name: </label>
-          <input type="text" name = 'lastName' value={this.state.lastName} onChange={this.handleChange} />
-          <label> Email: </label>
-          <input type="text" name = 'email' value={this.state.email} onChange={this.handleChange} />
+          <div >
+            <label style = {{marginBottom: '0px', marginTop: '8px'}}> First Name: </label>
+          </div>
+          <div>
+            <input type="text" name = 'firstName' style = {{textAlign: 'center'}} value={this.state.firstName} onChange={this.handleChange} /> 
+          </div>
+          <div>   
+            <label style = {{marginBottom: '0px', marginTop: '8px'}}> Last Name: </label>
+          </div>  
+          <div> 
+            <input type="text" name = 'lastName' style = {{textAlign: 'center'}} value={this.state.lastName} onChange={this.handleChange} />
+          </div>
+          <div> 
+            <label style = {{marginBottom: '0px', marginTop: '8px'}}> Email: </label>
+          </div>
+          <div>
+            <input type="text" name = 'email'  value={this.state.email} style = {{textAlign: 'center'}} onChange={this.handleChange} />
+          </div>
           <CheckboxList handleCheckboxChange = {this.handleDestinationChange} allItems = {Object.keys(this.destinations)}/>
           <CheckboxDates datesFree = {this.datesFree} handleDatesChange = {this.handleDatesChange}/>
           <input type="submit" value="Submit" />

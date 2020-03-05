@@ -50,7 +50,7 @@ class GroupForm extends React.Component {
       return (
         <form onSubmit={() => {this.props.handleGroupSubmit(event, this.state)}}>
           <div> Travel Group Name: </div>
-          <input type="text" value={this.state.name} onChange={this.handleChange} />
+          <input type="text" value={this.state.name} style = {{textAlign: 'center'}} onChange={this.handleChange} />
           <CheckboxList allItems = {this.airports} handleCheckboxChange = {this.handleDestinationChange} style = {{float: 'left'}}/>
           <div style = {{margin: '20px 0px'}}>Trip Start Date : Trip End Date</div>
           <DateList maxDates = {5} handleDateChange = {this.handleDateChange}/>
